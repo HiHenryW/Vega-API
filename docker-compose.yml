@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  mysql:
+    container_name: docker-local-mysql
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'db'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'rootpassword'
+    ports:
+      - '3300:3300'
+    volumes:
+      - sql-db:/var/lib/mysql
+
+volumes:
+  sql-db:
