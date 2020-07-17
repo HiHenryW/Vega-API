@@ -1,4 +1,3 @@
-
 DROP TABLE IF EXISTS questions;
 
 CREATE TABLE questions (
