@@ -3,6 +3,7 @@ import express from 'express';
 import cors from 'cors';
 const bodyParser = require('body-parser');
 const connection = require('../database/db');
+const mysql = require('mysql');
 
 const app = express();
 
@@ -17,6 +18,17 @@ app.get('/', (req, res) => {
   res.send('Root of domain reached!');
 });
 
-app.get('/example', (req, res) => {
-  res.send('Example route of domain reached!');
+// QUESTIONS LIST SERVICE
+app.get('/qa/:id', (req, res) => {
+  // res.send('Example route of domain reached!' + req.params.id);
+  let queryStr = `select * from questions join answers on questions.question_id=answers.question_id and product_id=${mysql.escape(
+    req.params.id
+  )}`;
+  connection.query(queryStr, (err, results, fields) => {
+    if (err) {
+      console.log(err);
+    }
+
+    console.log('results: ', results);
+  });
 });
