@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import express from 'express';
+import express, { query } from 'express';
 import cors from 'cors';
 const bodyParser = require('body-parser');
 const connection = require('../database/db');
@@ -24,11 +24,13 @@ app.get('/qa/:id', (req, res) => {
   let queryStr = `select * from questions join answers on questions.question_id=answers.question_id and product_id=${mysql.escape(
     req.params.id
   )}`;
-  connection.query(queryStr, (err, results, fields) => {
+  let options = { sql: queryStr, nestTables: true };
+  connection.query(options, (err, results, fields) => {
     if (err) {
       console.log(err);
     }
 
     console.log('results: ', results);
+    res.sendStatus(200);
   });
 });
