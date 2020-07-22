@@ -46,8 +46,46 @@ app.get('/qa/:id/answers', (req, res) => {
   connection.query(options, (err, results, fields) => {
     if (err) {
       console.log(err);
+      res.sendStatus(404);
     }
 
     res.status(200).json(convertFormatAnswers(results));
   });
+});
+
+// ADD QUESTION SERVICE
+app.post('/qa/:id', (req, res) => {
+  // console.log(req.query);
+  let queryStr = `insert into questions(question_id,product_id, question_body, question_date, asker_name, email, reported, helpfulness) values(?,?,?,?,?,?,?,?)`;
+  let timeStamp = new Date();
+
+  connection.query(
+    `select max(question_id) from questions`,
+    (err, results, fields) => {
+      if (err) {
+        console.log(err);
+        res.sendStatus(404);
+      } else {
+        let newId = 1 + results[0]['max(question_id)'];
+        let inputs = [
+          newId,
+          req.params.id,
+          req.query.body,
+          timeStamp,
+          req.query.name,
+          req.query.email,
+          0,
+          0,
+        ];
+        connection.query(queryStr, inputs, (err, results, fields) => {
+          if (err) {
+            console.log(err);
+            res.sendStatus(404);
+          }
+
+          res.sendStatus(201);
+        });
+      }
+    }
+  );
 });
