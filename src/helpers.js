@@ -1,5 +1,5 @@
 // HELPER FUNCTIONS
-const convertFormat = (queryResults) => {
+const convertFormatQuestions = (queryResults) => {
   let finalObj = {
     product_id: queryResults[0].questions.product_id,
     results: [],
@@ -60,4 +60,75 @@ const convertFormat = (queryResults) => {
   return finalObj;
 };
 
-module.exports = convertFormat;
+const convertFormatAnswers = (queryResults) => {
+  let finalObj = {
+    question: queryResults[0].answers.question_id,
+    results: [],
+  };
+
+  let allAnswers = {};
+
+  for (let i = 0; i < queryResults.length; i++) {
+    if (allAnswers[queryResults[i].answers.answer_id] === undefined) {
+      allAnswers[queryResults[i].answers.answer_id] = {
+        answer_id: queryResults[i].answers.answer_id,
+        body: queryResults[i].answers.answer_body,
+        date: queryResults[i].answers.answer_date,
+        answerer_name: queryResults[i].answers.answerer_name,
+        helpfulness: queryResults[i].answers.helpfulness,
+        photos: [],
+      };
+    } else {
+      continue;
+    }
+  }
+
+  // console.log(allAnswers)
+
+  let allPhotos = {};
+
+  for (let i = 0; i < queryResults.length; i++) {
+    if (
+      queryResults[i].photos.photo_id !== null &&
+      allPhotos[queryResults[i].photos.answer_id] === undefined
+    ) {
+      allPhotos[queryResults[i].photos.answer_id] = [
+        {
+          id: queryResults[i].photos.photo_id,
+          url: queryResults[i].photos.photo_url,
+        },
+      ];
+    } else if (
+      queryResults[i].photos.photo_id !== null &&
+      allPhotos[queryResults[i].photos.answer_id] !== undefined
+    ) {
+      allPhotos[queryResults[i].photos.answer_id].push({
+        id: queryResults[i].photos.photo_id,
+        url: queryResults[i].photos.photo_url,
+      });
+    } else {
+      continue;
+    }
+  }
+
+  // console.log(allPhotos);
+
+  for (let answer in allAnswers) {
+    for (let photo in allPhotos) {
+      if (answer === photo) {
+        allAnswers[answer].photos = allPhotos[photo];
+      } else {
+        continue;
+      }
+    }
+  }
+
+  finalObj.results = Object.values(allAnswers);
+
+  return finalObj;
+};
+
+module.exports = {
+  convertFormatQuestions: convertFormatQuestions,
+  convertFormatAnswers: convertFormatAnswers,
+};

@@ -4,7 +4,7 @@ import cors from 'cors';
 const bodyParser = require('body-parser');
 const connection = require('../database/db');
 const mysql = require('mysql');
-const convertFormat = require('./helpers');
+const { convertFormatQuestions, convertFormatAnswers } = require('./helpers');
 
 const app = express();
 
@@ -25,17 +25,29 @@ app.get('/qa/:id', (req, res) => {
   let queryStr = `select * from questions join answers on questions.question_id=answers.question_id where questions.product_id=${mysql.escape(
     req.params.id
   )}`;
+
   let options = { sql: queryStr, nestTables: true };
   connection.query(options, (err, results, fields) => {
     if (err) {
       console.log(err);
     }
 
-    res.status(200).json(convertFormat(results));
+    res.status(200).json(convertFormatQuestions(results));
   });
 });
 
 // ANSWERS LIST SERVICE
 app.get('/qa/:id/answers', (req, res) => {
-  res.status(200).send('success');
+  let queryStr = `select * from answers left join photos on answers.answer_id=photos.answer_id where answers.reported=0 and answers.question_id=${mysql.escape(
+    req.params.id
+  )}`;
+
+  let options = { sql: queryStr, nestTables: true };
+  connection.query(options, (err, results, fields) => {
+    if (err) {
+      console.log(err);
+    }
+
+    res.status(200).json(convertFormatAnswers(results));
+  });
 });
