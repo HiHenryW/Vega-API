@@ -34,3 +34,8 @@ app.get('/qa/:id', (req, res) => {
     res.status(200).json(convertFormat(results));
   });
 });
+
+// ANSWERS LIST SERVICE
+app.get('/qa/:id/answers', (req, res) => {
+  res.status(200).send('success');
+});
