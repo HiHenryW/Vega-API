@@ -4,6 +4,7 @@ import cors from 'cors';
 const bodyParser = require('body-parser');
 const connection = require('../database/db');
 const mysql = require('mysql');
+const convertFormat = require('./helpers');
 
 const app = express();
 
@@ -21,7 +22,7 @@ app.get('/', (req, res) => {
 // QUESTIONS LIST SERVICE
 app.get('/qa/:id', (req, res) => {
   // res.send('Example route of domain reached!' + req.params.id);
-  let queryStr = `select * from questions join answers on questions.question_id=answers.question_id and product_id=${mysql.escape(
+  let queryStr = `select * from questions join answers on questions.question_id=answers.question_id where questions.product_id=${mysql.escape(
     req.params.id
   )}`;
   let options = { sql: queryStr, nestTables: true };
@@ -30,7 +31,6 @@ app.get('/qa/:id', (req, res) => {
       console.log(err);
     }
 
-    console.log('results: ', results);
-    res.sendStatus(200);
+    res.status(200).json(convertFormat(results));
   });
 });
