@@ -9,7 +9,7 @@ drop table if exists questions;
 
 create table questions
 (
-  question_id int primary key,
+  question_id int not null primary key,
   product_id int,
   question_body text,
   question_date date,
@@ -22,7 +22,7 @@ create table questions
 
 create table answers
 (
-  answer_id int primary key,
+  answer_id int not null primary key,
   question_id int,
   answer_body text,
   answer_date date,
@@ -34,7 +34,7 @@ create table answers
 
 create table photos
 (
-  photo_id int primary key,
+  photo_id int not null primary key,
   answer_id int,
   photo_url varchar
 (255)
@@ -42,3 +42,6 @@ create table photos
 
 alter table answers add foreign key (question_id) references questions (question_id);
 alter table photos add foreign key (answer_id) references answers (answer_id);
+
+create index prodindex on questions(product_id);
+create index questionindex on answers(question_id);
