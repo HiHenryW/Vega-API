@@ -125,3 +125,29 @@ app.post('/qa/:question_id/answers', (req, res) => {
     }
   );
 });
+
+// MARK QUESTION AS HELPFUL SERVICE
+app.put('/qa/:question_id/helpful', (req, res) => {
+  let queryStr = `update questions set helpfulness=? where question_id=?`;
+
+  connection.query(
+    `select helpfulness from questions where question_id=${req.params.question_id}`,
+    (err, results, fields) => {
+      if (err) {
+        console.log(err);
+        res.sendStatus(404);
+      } else {
+        let newHelpfulness = 1 + results[0].helpfulness;
+        let inputs = [newHelpfulness, req.params.question_id];
+        connection.query(queryStr, inputs, (err, results, fields) => {
+          if (err) {
+            console.log(err);
+            res.sendStatus(404);
+          }
+
+          res.sendStatus(204);
+        });
+      }
+    }
+  );
+});
