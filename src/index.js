@@ -165,3 +165,17 @@ app.put('/qa/:question_id/report', (req, res) => {
     res.sendStatus(204);
   });
 });
+
+// REPORT ANSWER ROUTE
+app.put('/qa/answer/:answer_id/report', (req, res) => {
+  let queryStr = `update answers set reported=1 where answer_id=${req.params.answer_id}`;
+
+  connection.query(queryStr, (err, results, fields) => {
+    if (err) {
+      console.log(err);
+      res.sendStatus(404);
+    }
+
+    res.sendStatus(204);
+  });
+});
