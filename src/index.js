@@ -89,3 +89,39 @@ app.post('/qa/:id', (req, res) => {
     }
   );
 });
+
+// ADD ANSWER SERVICE
+app.post('/qa/:question_id/answers', (req, res) => {
+  let queryStr = `insert into answers(answer_id, question_id, answer_body, answer_date, answerer_name, email, reported, helpfulness) values(?,?,?,?,?,?,?,?)`;
+  let timeStamp = new Date();
+
+  connection.query(
+    `select max(answer_id) from answers`,
+    (err, results, fields) => {
+      if (err) {
+        console.log(err);
+        res.sendStatus(404);
+      } else {
+        let newId = 1 + results[0]['max(answer_id)'];
+        let inputs = [
+          newId,
+          req.params.question_id,
+          req.query.body,
+          timeStamp,
+          req.query.name,
+          req.query.email,
+          0,
+          0,
+        ];
+        connection.query(queryStr, inputs, (err, results, fields) => {
+          if (err) {
+            console.log(err);
+            res.sendStatus(404);
+          }
+
+          res.sendStatus(201);
+        });
+      }
+    }
+  );
+});
