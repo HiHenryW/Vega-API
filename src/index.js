@@ -166,6 +166,32 @@ app.put('/qa/:question_id/report', (req, res) => {
   });
 });
 
+// MARK ANSWER AS HELPFUL ROUTE
+app.put('/qa/answer/:answer_id/helpful', (req, res) => {
+  let queryStr = `update answers set helpfulness=? where answer_id=?`;
+
+  connection.query(
+    `select helpfulness from answers where answer_id=${req.params.answer_id}`,
+    (err, results, fields) => {
+      if (err) {
+        console.log(err);
+        res.sendStatus(404);
+      } else {
+        let newHelpfulness = 1 + results[0].helpfulness;
+        let inputs = [newHelpfulness, req.params.answer_id];
+        connection.query(queryStr, inputs, (err, results, fields) => {
+          if (err) {
+            console.log(err);
+            res.sendStatus(404);
+          }
+
+          res.sendStatus(204);
+        });
+      }
+    }
+  );
+});
+
 // REPORT ANSWER ROUTE
 app.put('/qa/answer/:answer_id/report', (req, res) => {
   let queryStr = `update answers set reported=1 where answer_id=${req.params.answer_id}`;
