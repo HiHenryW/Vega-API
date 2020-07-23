@@ -19,7 +19,7 @@ app.get('/', (req, res) => {
   res.send('Root of domain reached!');
 });
 
-// QUESTIONS LIST SERVICE
+// QUESTIONS LIST ROUTE
 app.get('/qa/:id', (req, res) => {
   // res.send('Example route of domain reached!' + req.params.id);
   let queryStr = `select * from questions join answers on questions.question_id=answers.question_id where questions.product_id=${mysql.escape(
@@ -36,7 +36,7 @@ app.get('/qa/:id', (req, res) => {
   });
 });
 
-// ANSWERS LIST SERVICE
+// ANSWERS LIST ROUTE
 app.get('/qa/:id/answers', (req, res) => {
   let queryStr = `select * from answers left join photos on answers.answer_id=photos.answer_id where answers.reported=0 and answers.question_id=${mysql.escape(
     req.params.id
@@ -53,7 +53,7 @@ app.get('/qa/:id/answers', (req, res) => {
   });
 });
 
-// ADD QUESTION SERVICE
+// ADD QUESTION ROUTE
 app.post('/qa/:id', (req, res) => {
   // console.log(req.query);
   let queryStr = `insert into questions(question_id,product_id, question_body, question_date, asker_name, email, reported, helpfulness) values(?,?,?,?,?,?,?,?)`;
@@ -90,7 +90,7 @@ app.post('/qa/:id', (req, res) => {
   );
 });
 
-// ADD ANSWER SERVICE
+// ADD ANSWER ROUTE
 app.post('/qa/:question_id/answers', (req, res) => {
   let queryStr = `insert into answers(answer_id, question_id, answer_body, answer_date, answerer_name, email, reported, helpfulness) values(?,?,?,?,?,?,?,?)`;
   let timeStamp = new Date();
@@ -126,7 +126,7 @@ app.post('/qa/:question_id/answers', (req, res) => {
   );
 });
 
-// MARK QUESTION AS HELPFUL SERVICE
+// MARK QUESTION AS HELPFUL ROUTE
 app.put('/qa/:question_id/helpful', (req, res) => {
   let queryStr = `update questions set helpfulness=? where question_id=?`;
 
@@ -150,4 +150,18 @@ app.put('/qa/:question_id/helpful', (req, res) => {
       }
     }
   );
+});
+
+// REPORT QUESTION ROUTE
+app.put('/qa/:question_id/report', (req, res) => {
+  let queryStr = `update questions set reported=1 where question_id=${req.params.question_id}`;
+
+  connection.query(queryStr, (err, results, fields) => {
+    if (err) {
+      console.log(err);
+      res.sendStatus(404);
+    }
+
+    res.sendStatus(204);
+  });
 });
