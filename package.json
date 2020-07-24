@@ -13,8 +13,8 @@
   },
   "scripts": {
     "start": "nodemon --exec babel-node src/index.js",
-    "build": "mysql -u root < database/schema.sql",
-    "load": "mysql -u root < database/load-data.sql",
+    "build": "mysql -u root < database/sql-scripts/schema.sql",
+    "load": "mysql -u root < database/sql-scripts/load-data.sql",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
