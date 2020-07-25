@@ -9,6 +9,8 @@ services:
       MYSQL_USER: mysql
       MYSQL_PASSWORD: password
       DATABASE_HOST: db
+    ports:
+      - '3306:3306'
   server:
     build: ./
     environment:
