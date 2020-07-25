@@ -9,10 +9,14 @@ services:
       MYSQL_USER: mysql
       MYSQL_PASSWORD: password
       DATABASE_HOST: db
-    ports:
-      - '3306:3306'
   server:
     build: ./
+    environment:
+      DATABASE_HOST: db
+      MYSQL_PORT: 3306
+      MYSQL_DATABASE: sdcqa
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: password
     ports:
       - '3000:3000'
     depends_on:
