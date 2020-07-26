@@ -2,22 +2,26 @@
 
 ## Building and running on localhost
 
-First install dependencies:
+1. Install Dependencies:
 
 ```sh
 npm install
 ```
 
-To run and start server:
+2. Open Up Terminal Shell and Go To Root Directory of Module.
+
+3. Execute Docker Compose File (Detached Mode):
 
 ```sh
-npm start
+docker-compose up -d
 ```
 
-To create and seed database:
+4. Both Web Server and Database Containers Should Now Be Running.
+
+5. To View Containers:
 
 ```sh
-npm run build
+docker ps
 ```
 
 ## Tech Stack
@@ -28,15 +32,15 @@ npm run build
 - Babel
 - Docker
 
-## Git Workflow
+## Git Feature Branch Workflow
 
-Check Status Through
+Check Status Through:
 
 ```sh
 git status
 ```
 
-1. Pull Down Changes From Master and Create New Local Feature Branch
+1. Pull Down Changes From Master and Create New Local Feature Branch:
 
 ```sh
 git checkout master
@@ -44,15 +48,15 @@ git pull origin master
 git checkout -b <branchname>
 ```
 
-OR, Checkout Existing Feature Branch
+OR, Checkout Existing Feature Branch:
 
 ```sh
 git checkout <branchname>
 ```
 
-2. Make and Commit Your File Changes
+2. Make and Commit Any File Changes
 
-AND, If You Realize You’ve Accidentally Made Your Changes on Master
+AND, If You Realize You’ve Accidentally Made Your Changes on Master:
 
 ```sh
 git stash
