@@ -49,7 +49,7 @@ app.get('/qa/:id/answers', (req, res) => {
       res.sendStatus(404);
     }
 
-    res.status(200).json(convertFormatAnswers(results));
+    res.status(200).json(convertFormatAnswers(results, req.params.id));
   });
 });
 
