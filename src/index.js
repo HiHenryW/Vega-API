@@ -35,7 +35,7 @@ app.get('/qa/:id', (req, res) => {
       console.log(err);
     }
 
-    res.status(200).json(convertFormatQuestions(results));
+    res.status(200).json(convertFormatQuestions(results, req.params.id));
   });
 });
 

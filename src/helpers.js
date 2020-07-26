@@ -1,5 +1,12 @@
 // HELPER FUNCTIONS
-const convertFormatQuestions = (queryResults) => {
+const convertFormatQuestions = (queryResults, questionId) => {
+  if (queryResults.length < 1) {
+    return {
+      product_id: questionId,
+      results: [],
+    };
+  }
+
   let finalObj = {
     product_id: queryResults[0].questions.product_id,
     results: [],
