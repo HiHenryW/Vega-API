@@ -1,0 +1,15 @@
+config:
+  target: 'http://127.0.0.1:3000'
+  phases:
+    - duration: 60
+      arrivalRate: 10
+      rampTo: 50
+      name: 'Warm up the app'
+    - duration: 60
+      arrivalRate: 50
+      name: 'Sustained max load'
+scenarios:
+  - name: 'Get answers list'
+    flow:
+      - get:
+          url: '/qa/1/answers'
