@@ -60,7 +60,14 @@ const convertFormatQuestions = (queryResults) => {
   return finalObj;
 };
 
-const convertFormatAnswers = (queryResults) => {
+const convertFormatAnswers = (queryResults, questionId) => {
+  if (queryResults.length < 1) {
+    return {
+      question: questionId,
+      results: [],
+    };
+  }
+
   let finalObj = {
     question: queryResults[0].answers.question_id,
     results: [],
