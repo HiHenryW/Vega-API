@@ -5,14 +5,15 @@ const bodyParser = require('body-parser');
 const connection = require('../database/db');
 const mysql = require('mysql');
 const { convertFormatQuestions, convertFormatAnswers } = require('./helpers');
+const port = 3000;
 
 const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
 
-app.listen(process.env.PORT, () => {
-  console.log(`App listening on port ${process.env.PORT}!`);
+app.listen(port, () => {
+  console.log(`App listening on port ${port}!`);
 });
 
 app.get('/', (req, res) => {
@@ -25,6 +26,8 @@ app.get('/qa/:id', (req, res) => {
   let queryStr = `select * from questions join answers on questions.question_id=answers.question_id where questions.product_id=${mysql.escape(
     req.params.id
   )}`;
+
+  console.log('route reached!');
 
   let options = { sql: queryStr, nestTables: true };
   connection.query(options, (err, results, fields) => {

@@ -1,4 +1,5 @@
 node_modules
 old-files
+raw-data
 .env
-database/volumes/
+volumes

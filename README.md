@@ -26,6 +26,7 @@ npm run build
 - Node.js
 - Express
 - Babel
+- Docker
 
 ## Git Workflow
 
