@@ -27,6 +27,8 @@ app.get('/qa/:id', (req, res) => {
     req.params.id
   )}`;
 
+  console.log('route reached!');
+
   let options = { sql: queryStr, nestTables: true };
   connection.query(options, (err, results, fields) => {
     if (err) {
