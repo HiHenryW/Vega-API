@@ -3,6 +3,8 @@ version: '3.8'
 services:
   db:
     build: ./database
+    volumes:
+      - ./database/volumes:/var/lib/mysql
     environment:
       MYSQL_DATABASE: sdcqa
       MYSQL_ROOT_PASSWORD: password
@@ -10,7 +12,7 @@ services:
       MYSQL_PASSWORD: password
       DATABASE_HOST: db
     ports:
-      - '3306:3306'
+      - '3307:3306'
   server:
     build: ./
     environment:

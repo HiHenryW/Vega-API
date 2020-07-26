@@ -5,14 +5,15 @@ const bodyParser = require('body-parser');
 const connection = require('../database/db');
 const mysql = require('mysql');
 const { convertFormatQuestions, convertFormatAnswers } = require('./helpers');
+const port = 3000;
 
 const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
 
-app.listen(process.env.PORT, () => {
-  console.log(`App listening on port ${process.env.PORT}!`);
+app.listen(port, () => {
+  console.log(`App listening on port ${port}!`);
 });
 
 app.get('/', (req, res) => {

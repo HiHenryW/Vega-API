@@ -2,3 +2,4 @@ node_modules
 old-files
 raw-data
 .env
+volumes
