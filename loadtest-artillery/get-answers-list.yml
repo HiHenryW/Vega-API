@@ -12,4 +12,4 @@ scenarios:
   - name: 'Get answers list'
     flow:
       - get:
-          url: '/qa/1/answers'
+          url: '/qa/{{$randomNumber(1,999999)}}/answers'
