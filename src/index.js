@@ -22,7 +22,6 @@ app.get('/', (req, res) => {
 
 // QUESTIONS LIST ROUTE
 app.get('/qa/:id', (req, res) => {
-  // res.send('Example route of domain reached!' + req.params.id);
   let queryStr = `select * from questions join answers on questions.question_id=answers.question_id where questions.product_id=${mysql.escape(
     req.params.id
   )}`;
