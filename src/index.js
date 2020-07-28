@@ -5,7 +5,6 @@ const bodyParser = require('body-parser');
 const connection = require('../database/db');
 const mysql = require('mysql');
 const { convertFormatQuestions, convertFormatAnswers } = require('./helpers');
-const path = require('path');
 const port = 3000;
 
 const app = express();
@@ -24,12 +23,7 @@ app.get('/', (req, res) => {
 // LOADER.IO VERIFICATION
 app.get('/:token', (req, res) => {
   if (req.params.token === 'loaderio-0e8f49f909d45538ac3ebb1dc65e2922') {
-    const address = path.join(
-      __dirname,
-      '../loaderio-0e8f49f909d45538ac3ebb1dc65e2922.txt'
-    );
-    res.download(address);
-    res.sendStatus(200);
+    res.send('loaderio-0e8f49f909d45538ac3ebb1dc65e2922');
   } else {
     res.sendStatus(404);
   }
