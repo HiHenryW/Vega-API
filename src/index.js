@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
 
 // LOADER.IO VERIFICATION
 app.get('/:token', (req, res) => {
-  if (req.params.id === 'loaderio-0e8f49f909d45538ac3ebb1dc65e2922') {
+  if (req.params.token === 'loaderio-0e8f49f909d45538ac3ebb1dc65e2922') {
     res.status(200).json('loaderio-0e8f49f909d45538ac3ebb1dc65e2922');
   } else {
     res.sendStatus(404);
