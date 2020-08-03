@@ -13,20 +13,21 @@
   },
   "scripts": {
     "start": "nodemon --exec babel-node src/index.js",
-    "build": "mysql -u root < database/sql-scripts/build-schema.sql",
+    "build": "mysql -uroot -ppassword < database/sql-scripts/build-schema.sql",
+    "load": "mysql -uroot -ppassword < database/sql-scripts/load-data.sql",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Team-Vega/QA-API.git"
+    "url": "git+https://github.com/HiHenryW/Vega-API.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Team-Vega/QA-API/issues"
+    "url": "https://github.com/HiHenryW/Vega-API/issues"
   },
-  "homepage": "https://github.com/Team-Vega/QA-API#readme",
+  "homepage": "https://github.com/HiHenryW/Vega-API#readme",
   "devDependencies": {
     "@babel/core": "^7.10.5",
     "@babel/node": "^7.10.5",

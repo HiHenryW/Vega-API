@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
 // QUESTIONS LIST ROUTE
 app.get('/qa/:id', (req, res) => {
   // res.send('Example route of domain reached!' + req.params.id);
-  let queryStr = `select * from questions join answers on questions.question_id=answers.question_id where questions.product_id=${mysql.escape(
+  let queryStr = `SELECT * FROM questions JOIN answers ON questions.question_id=answers.question_id WHERE questions.product_id=${mysql.escape(
     req.params.id
   )}`;
 
@@ -39,7 +39,7 @@ app.get('/qa/:id', (req, res) => {
 
 // ANSWERS LIST ROUTE
 app.get('/qa/:id/answers', (req, res) => {
-  let queryStr = `select * from answers left join photos on answers.answer_id=photos.answer_id where answers.reported=0 and answers.question_id=${mysql.escape(
+  let queryStr = `SELECT * FROM answers LEFT JOIN photos ON answers.answer_id=photos.answer_id WHERE answers.reported=0 AND answers.question_id=${mysql.escape(
     req.params.id
   )}`;
 
@@ -57,17 +57,17 @@ app.get('/qa/:id/answers', (req, res) => {
 // ADD QUESTION ROUTE
 app.post('/qa/:id', (req, res) => {
   // console.log(req.query);
-  let queryStr = `insert into questions(question_id,product_id, question_body, question_date, asker_name, email, reported, helpfulness) values(?,?,?,?,?,?,?,?)`;
+  let queryStr = `INSERT INTO questions(question_id,product_id, question_body, question_date, asker_name, email, reported, helpfulness) VALUES(?,?,?,?,?,?,?,?)`;
   let timeStamp = new Date();
 
   connection.query(
-    `select max(question_id) from questions`,
+    `SELECT MAX(question_id) FROM questions`,
     (err, results, fields) => {
       if (err) {
         console.log(err);
         res.sendStatus(404);
       } else {
-        let newId = 1 + results[0]['max(question_id)'];
+        let newId = 1 + results[0]['MAX(question_id)'];
         let inputs = [
           newId,
           req.params.id,
@@ -93,17 +93,17 @@ app.post('/qa/:id', (req, res) => {
 
 // ADD ANSWER ROUTE
 app.post('/qa/:question_id/answers', (req, res) => {
-  let queryStr = `insert into answers(answer_id, question_id, answer_body, answer_date, answerer_name, email, reported, helpfulness) values(?,?,?,?,?,?,?,?)`;
+  let queryStr = `INSERT INTO answers(answer_id, question_id, answer_body, answer_date, answerer_name, email, reported, helpfulness) VALUES(?,?,?,?,?,?,?,?)`;
   let timeStamp = new Date();
 
   connection.query(
-    `select max(answer_id) from answers`,
+    `SELECT MAX(answer_id) FROM answers`,
     (err, results, fields) => {
       if (err) {
         console.log(err);
         res.sendStatus(404);
       } else {
-        let newId = 1 + results[0]['max(answer_id)'];
+        let newId = 1 + results[0]['MAX(answer_id)'];
         let inputs = [
           newId,
           req.params.question_id,
@@ -129,10 +129,10 @@ app.post('/qa/:question_id/answers', (req, res) => {
 
 // MARK QUESTION AS HELPFUL ROUTE
 app.put('/qa/:question_id/helpful', (req, res) => {
-  let queryStr = `update questions set helpfulness=? where question_id=?`;
+  let queryStr = `UPDATE questions SET helpfulness=? WHERE question_id=?`;
 
   connection.query(
-    `select helpfulness from questions where question_id=${req.params.question_id}`,
+    `SELECT helpfulness FROM questions WHERE question_id=${req.params.question_id}`,
     (err, results, fields) => {
       if (err) {
         console.log(err);
@@ -155,7 +155,7 @@ app.put('/qa/:question_id/helpful', (req, res) => {
 
 // REPORT QUESTION ROUTE
 app.put('/qa/:question_id/report', (req, res) => {
-  let queryStr = `update questions set reported=1 where question_id=${req.params.question_id}`;
+  let queryStr = `UPDATE questions SET reported=1 WHERE question_id=${req.params.question_id}`;
 
   connection.query(queryStr, (err, results, fields) => {
     if (err) {
@@ -169,10 +169,10 @@ app.put('/qa/:question_id/report', (req, res) => {
 
 // MARK ANSWER AS HELPFUL ROUTE
 app.put('/qa/answer/:answer_id/helpful', (req, res) => {
-  let queryStr = `update answers set helpfulness=? where answer_id=?`;
+  let queryStr = `UPDATE answers SET helpfulness=? WHERE answer_id=?`;
 
   connection.query(
-    `select helpfulness from answers where answer_id=${req.params.answer_id}`,
+    `SELECT helpfulness FROM answers WHERE answer_id=${req.params.answer_id}`,
     (err, results, fields) => {
       if (err) {
         console.log(err);
@@ -195,7 +195,7 @@ app.put('/qa/answer/:answer_id/helpful', (req, res) => {
 
 // REPORT ANSWER ROUTE
 app.put('/qa/answer/:answer_id/report', (req, res) => {
-  let queryStr = `update answers set reported=1 where answer_id=${req.params.answer_id}`;
+  let queryStr = `UPDATE answers SET reported=1 WHERE answer_id=${req.params.answer_id}`;
 
   connection.query(queryStr, (err, results, fields) => {
     if (err) {
