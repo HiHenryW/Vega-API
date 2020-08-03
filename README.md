@@ -1,4 +1,4 @@
-# QA-API
+# Vega API
 
 ## Building and running on localhost
 
