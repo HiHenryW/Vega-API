@@ -57,7 +57,7 @@ app.get('/qa/:id/answers', (req, res) => {
 // ADD QUESTION ROUTE
 app.post('/qa/:id', (req, res) => {
   // console.log(req.query);
-  let queryStr = `INSERT INTO questions(question_id,product_id, question_body, question_date, asker_name, email, reported, helpfulness) VALUES(?,?,?,?,?,?,?,?)`;
+  let queryStr = `INSERT INTO questions(question_id,product_id, question_body, question_date, asker_name, email, reported, helpfulness) VALUES(?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE question_id=question_id+1`;
   let timeStamp = new Date();
 
   connection.query(
@@ -93,7 +93,7 @@ app.post('/qa/:id', (req, res) => {
 
 // ADD ANSWER ROUTE
 app.post('/qa/:question_id/answers', (req, res) => {
-  let queryStr = `INSERT INTO answers(answer_id, question_id, answer_body, answer_date, answerer_name, email, reported, helpfulness) VALUES(?,?,?,?,?,?,?,?)`;
+  let queryStr = `INSERT INTO answers(answer_id, question_id, answer_body, answer_date, answerer_name, email, reported, helpfulness) VALUES(?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE answer_id=answer_id+1`;
   let timeStamp = new Date();
 
   connection.query(
@@ -129,28 +129,15 @@ app.post('/qa/:question_id/answers', (req, res) => {
 
 // MARK QUESTION AS HELPFUL ROUTE
 app.put('/qa/:question_id/helpful', (req, res) => {
-  let queryStr = `UPDATE questions SET helpfulness=? WHERE question_id=?`;
-
-  connection.query(
-    `SELECT helpfulness FROM questions WHERE question_id=${req.params.question_id}`,
-    (err, results, fields) => {
-      if (err) {
-        console.log(err);
-        res.sendStatus(404);
-      } else {
-        let newHelpfulness = 1 + results[0].helpfulness;
-        let inputs = [newHelpfulness, req.params.question_id];
-        connection.query(queryStr, inputs, (err, results, fields) => {
-          if (err) {
-            console.log(err);
-            res.sendStatus(404);
-          }
-
-          res.sendStatus(204);
-        });
-      }
+  let queryStr = `UPDATE questions SET helpfulness=helpfulness+1 WHERE question_id=${req.params.question_id}`;
+  connection.query(queryStr, (err, results, fields) => {
+    if (err) {
+      console.log(err);
+      res.sendStatus(404);
     }
-  );
+
+    res.sendStatus(204);
+  });
 });
 
 // REPORT QUESTION ROUTE
@@ -169,28 +156,15 @@ app.put('/qa/:question_id/report', (req, res) => {
 
 // MARK ANSWER AS HELPFUL ROUTE
 app.put('/qa/answer/:answer_id/helpful', (req, res) => {
-  let queryStr = `UPDATE answers SET helpfulness=? WHERE answer_id=?`;
-
-  connection.query(
-    `SELECT helpfulness FROM answers WHERE answer_id=${req.params.answer_id}`,
-    (err, results, fields) => {
-      if (err) {
-        console.log(err);
-        res.sendStatus(404);
-      } else {
-        let newHelpfulness = 1 + results[0].helpfulness;
-        let inputs = [newHelpfulness, req.params.answer_id];
-        connection.query(queryStr, inputs, (err, results, fields) => {
-          if (err) {
-            console.log(err);
-            res.sendStatus(404);
-          }
-
-          res.sendStatus(204);
-        });
-      }
+  let queryStr = `UPDATE answers SET helpfulness=helpfulness+1 WHERE answer_id=${req.params.answer_id}`;
+  connection.query(queryStr, (err, results, fields) => {
+    if (err) {
+      console.log(err);
+      res.sendStatus(404);
     }
-  );
+
+    res.sendStatus(204);
+  });
 });
 
 // REPORT ANSWER ROUTE
