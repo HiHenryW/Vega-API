@@ -2,3 +2,4 @@ node_modules
 npm-debug.log
 old-files
 loadtest-artillery
+load-data.sql
