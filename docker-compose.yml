@@ -1,28 +1,14 @@
 version: '3.8'
 
 services:
-  db:
-    build: ./database
-    volumes:
-      - ./database/volumes:/var/lib/mysql
-    environment:
-      MYSQL_DATABASE: sdcqa
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_USER: mysql
-      MYSQL_PASSWORD: password
-      DATABASE_HOST: db
-    ports:
-      - '3307:3306'
   server:
     build: ./
-    environment:
-      DATABASE_HOST: db
-      MYSQL_PORT: 3306
-      MYSQL_DATABASE: sdcqa
-      MYSQL_USER: mysql
-      MYSQL_PASSWORD: password
     ports:
-      - '3000:3000'
-    depends_on:
-      - db
+      - '80:3000'
+    environment:
+      DATABASE_HOST: 3.101.22.86
+      DB_PASS: password
+      MYSQL_DB: sdcqa
+      MYSQL_USER: root
+      MYSQL_PORT: 3306
     restart: on-failure
