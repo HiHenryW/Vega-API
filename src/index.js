@@ -20,6 +20,15 @@ app.get('/', (req, res) => {
   res.send('Root of domain reached!');
 });
 
+// LOADER.IO VERIFICATION
+app.get('/:token', (req, res) => {
+  if (req.params.token === 'loaderio-0e8f49f909d45538ac3ebb1dc65e2922') {
+    res.send('loaderio-0e8f49f909d45538ac3ebb1dc65e2922');
+  } else {
+    res.sendStatus(404);
+  }
+});
+
 // QUESTIONS LIST ROUTE
 app.get('/qa/:id', (req, res) => {
   // res.send('Example route of domain reached!' + req.params.id);
